@@ -1,0 +1,11 @@
+[gd_scene load_steps=2 format=3 uid="uid://br0vvktngdufl"]
+
+[ext_resource type="Texture2D" uid="uid://cow1dftq4a2x0" path="res://assets/GameDevTavern - BeatEmUp Assets/assets/art/backgrounds/street-background.png" id="1_05ulh"]
+
+[node name="Stage" type="Node2D"]
+
+[node name="Backgrounds" type="Node2D" parent="."]
+
+[node name="Sprite2D" type="Sprite2D" parent="Backgrounds"]
+position = Vector2(201, 31)
+texture = ExtResource("1_05ulh")

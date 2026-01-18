@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://dpmqkw3x0l0bo"
+path="res://.godot/imported/intro.mp3-a0900b51dcf6df39f6955f0a60516570.mp3str"
+
+[deps]
+
+source_file="res://assets/GameDevTavern - BeatEmUp Assets/assets/music/intro.mp3"
+dest_files=["res://.godot/imported/intro.mp3-a0900b51dcf6df39f6955f0a60516570.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

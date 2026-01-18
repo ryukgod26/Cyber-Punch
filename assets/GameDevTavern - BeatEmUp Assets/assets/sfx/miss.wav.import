@@ -1,0 +1,24 @@
+[remap]
+
+importer="wav"
+type="AudioStreamWAV"
+uid="uid://ngkwj0svh7p"
+path="res://.godot/imported/miss.wav-5257014199466fd2bf3d23f1f783bbe0.sample"
+
+[deps]
+
+source_file="res://assets/GameDevTavern - BeatEmUp Assets/assets/sfx/miss.wav"
+dest_files=["res://.godot/imported/miss.wav-5257014199466fd2bf3d23f1f783bbe0.sample"]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=2

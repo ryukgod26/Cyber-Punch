@@ -1,0 +1,19 @@
+[gd_scene load_steps=3 format=3 uid="uid://4e1wkjyklnwx"]
+
+[ext_resource type="PackedScene" uid="uid://br0vvktngdufl" path="res://Scenes/World/stage.tscn" id="1_t1gg8"]
+[ext_resource type="PackedScene" uid="uid://dfilj6qruovho" path="res://Scenes/Player/player.tscn" id="2_yp2ti"]
+
+[node name="World" type="Node2D"]
+
+[node name="TileMapLayers" type="Node2D" parent="."]
+
+[node name="Stage" parent="." instance=ExtResource("1_t1gg8")]
+
+[node name="Entities" type="Node2D" parent="."]
+
+[node name="Player" type="Node2D" parent="Entities"]
+
+[node name="Player" parent="Entities/Player" instance=ExtResource("2_yp2ti")]
+position = Vector2(31, 38)
+
+[node name="Enemies" type="Node2D" parent="Entities"]

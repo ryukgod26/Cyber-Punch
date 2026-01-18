@@ -1,0 +1,24 @@
+[remap]
+
+importer="wav"
+type="AudioStreamWAV"
+uid="uid://davh4preyb3ce"
+path="res://.godot/imported/click.wav-62b88286b4e9d851198669f646f04bb5.sample"
+
+[deps]
+
+source_file="res://assets/GameDevTavern - BeatEmUp Assets/assets/sfx/click.wav"
+dest_files=["res://.godot/imported/click.wav-62b88286b4e9d851198669f646f04bb5.sample"]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=2
