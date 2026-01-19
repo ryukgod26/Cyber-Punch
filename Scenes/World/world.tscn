@@ -1,8 +1,9 @@
-[gd_scene load_steps=5 format=3 uid="uid://4e1wkjyklnwx"]
+[gd_scene load_steps=6 format=3 uid="uid://4e1wkjyklnwx"]
 
 [ext_resource type="Script" uid="uid://c4asf14umldv5" path="res://Scripts/World/world.gd" id="1_3rhlx"]
 [ext_resource type="PackedScene" uid="uid://br0vvktngdufl" path="res://Scenes/World/stage.tscn" id="1_t1gg8"]
 [ext_resource type="PackedScene" uid="uid://dfilj6qruovho" path="res://Scenes/Player/player.tscn" id="2_yp2ti"]
+[ext_resource type="PackedScene" uid="uid://s0lptux8agds" path="res://Scenes/Objects/barrel.tscn" id="4_vadfg"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_3rhlx"]
 size = Vector2(6, 64)
@@ -10,18 +11,7 @@ size = Vector2(6, 64)
 [node name="World" type="Node2D"]
 script = ExtResource("1_3rhlx")
 
-[node name="TileMapLayers" type="Node2D" parent="."]
-
 [node name="Stage" parent="." instance=ExtResource("1_t1gg8")]
-
-[node name="Entities" type="Node2D" parent="."]
-
-[node name="Player" type="Node2D" parent="Entities"]
-
-[node name="Player" parent="Entities/Player" instance=ExtResource("2_yp2ti")]
-position = Vector2(31, 38)
-
-[node name="Enemies" type="Node2D" parent="Entities"]
 
 [node name="Camera" type="Camera2D" parent="."]
 position = Vector2(50, 32)
@@ -41,3 +31,24 @@ position = Vector2(105, 0)
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Camera/InvisibleWalls/RightWall"]
 position = Vector2(-2, 33)
 shape = SubResource("RectangleShape2D_3rhlx")
+
+[node name="ActorsContainer" type="Node2D" parent="."]
+y_sort_enabled = true
+
+[node name="Entities" type="Node2D" parent="ActorsContainer"]
+y_sort_enabled = true
+
+[node name="Player" type="Node2D" parent="ActorsContainer/Entities"]
+y_sort_enabled = true
+
+[node name="Player" parent="ActorsContainer/Entities/Player" instance=ExtResource("2_yp2ti")]
+position = Vector2(31, 38)
+
+[node name="Enemies" type="Node2D" parent="ActorsContainer/Entities"]
+y_sort_enabled = true
+
+[node name="Objects" type="Node2D" parent="ActorsContainer"]
+y_sort_enabled = true
+
+[node name="Barrel" parent="ActorsContainer/Objects" instance=ExtResource("4_vadfg")]
+position = Vector2(73, 55)
