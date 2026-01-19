@@ -1,8 +1,11 @@
-[gd_scene load_steps=3 format=3 uid="uid://br0vvktngdufl"]
+[gd_scene load_steps=4 format=3 uid="uid://br0vvktngdufl"]
 
 [ext_resource type="Texture2D" uid="uid://cow1dftq4a2x0" path="res://assets/GameDevTavern - BeatEmUp Assets/assets/art/backgrounds/street-background.png" id="1_05ulh"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_05ulh"]
+size = Vector2(411, 33)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_id4dc"]
 size = Vector2(411, 20)
 
 [node name="Stage" type="Node2D"]
@@ -18,11 +21,11 @@ texture = ExtResource("1_05ulh")
 [node name="StaticBody2D" type="StaticBody2D" parent="WorldColliders"]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="WorldColliders/StaticBody2D"]
-position = Vector2(200, 21)
+position = Vector2(200, 14.5)
 shape = SubResource("RectangleShape2D_05ulh")
 
 [node name="StaticBody2D2" type="StaticBody2D" parent="WorldColliders"]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="WorldColliders/StaticBody2D2"]
 position = Vector2(200, 73)
-shape = SubResource("RectangleShape2D_05ulh")
+shape = SubResource("RectangleShape2D_id4dc")
