@@ -1,6 +1,7 @@
-[gd_scene load_steps=2 format=3 uid="uid://t8yoilo4plm7"]
+[gd_scene load_steps=3 format=3 uid="uid://t8yoilo4plm7"]
 
 [ext_resource type="Script" uid="uid://gip0xs0lm6vu" path="res://Scripts/Enemy/enemy.gd" id="1_mw074"]
+[ext_resource type="PackedScene" uid="uid://bmpmh40w1aq28" path="res://Scenes/Areas/damage_emitter.tscn" id="2_nvvbs"]
 
 [node name="Enemy" type="CharacterBody2D" groups=["Eenmy"]]
 script = ExtResource("1_mw074")
@@ -13,3 +14,5 @@ position = Vector2(-1, -2)
 [node name="ShadowSprite" type="Sprite2D" parent="."]
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+
+[node name="DamageEmitter" parent="." instance=ExtResource("2_nvvbs")]

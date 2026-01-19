@@ -45,8 +45,11 @@ func handle_animation() -> void:
 func handle_sprite_direction() -> void:
 	if velocity.x > 0:
 		character_sprite.flip_h = false
+		$DamageEmitter/CollisionShape2D.position.x = 10
 	elif velocity.x < 0:
 		character_sprite.flip_h = true
+		$DamageEmitter/CollisionShape2D.position.x = -10
+		
 
 func can_attack() -> bool:
 	#Might Change the Logic in future due to extra states
@@ -58,3 +61,9 @@ func can_move() -> bool:
 
 func attack_complete() -> void:
 	current_state = States.Idle
+
+
+func _on_damage_emitter_area_entered(area: Area2D) -> void:
+	if area is DamageReceiver:
+		var direction := Vector2.LEFT if area.global_position.x < global_position.x else Vector2.RIGHT
+		area.hit(Damage,direction)

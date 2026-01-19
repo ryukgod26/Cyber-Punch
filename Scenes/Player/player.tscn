@@ -1,8 +1,9 @@
-[gd_scene load_steps=10 format=3 uid="uid://dfilj6qruovho"]
+[gd_scene load_steps=12 format=3 uid="uid://dfilj6qruovho"]
 
 [ext_resource type="Script" uid="uid://lnagmto004dw" path="res://Scripts/Player/player.gd" id="1_uvnfx"]
 [ext_resource type="Texture2D" uid="uid://b8ars6iui7otx" path="res://assets/GameDevTavern - BeatEmUp Assets/assets/art/characters/player.png" id="2_a3d8c"]
 [ext_resource type="Texture2D" uid="uid://dbrp4yhgse1xp" path="res://assets/GameDevTavern - BeatEmUp Assets/assets/art/characters/shadow.png" id="3_xpcdj"]
+[ext_resource type="PackedScene" uid="uid://bmpmh40w1aq28" path="res://Scenes/Areas/damage_emitter.tscn" id="4_mtuoh"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_xpcdj"]
 radius = 2.0
@@ -40,6 +41,18 @@ tracks/0/keys = {
 "update": 1,
 "values": [0]
 }
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("DamageEmitter:monitoring")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
 
 [sub_resource type="Animation" id="Animation_dd0ac"]
 resource_name = "punch"
@@ -71,6 +84,18 @@ tracks/1/keys = {
 "method": &"attack_complete"
 }]
 }
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("DamageEmitter:monitoring")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.14),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [true, false]
+}
 
 [sub_resource type="Animation" id="Animation_htcer"]
 resource_name = "walk"
@@ -98,11 +123,15 @@ _data = {
 &"walk": SubResource("Animation_htcer")
 }
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_mtuoh"]
+size = Vector2(10, 6)
+
 [node name="Player" type="CharacterBody2D" groups=["Player"]]
 y_sort_enabled = true
 collision_layer = 2
 collision_mask = 25
 script = ExtResource("1_uvnfx")
+Damage = 1
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(0, -1)
@@ -123,3 +152,14 @@ libraries = {
 &"": SubResource("AnimationLibrary_mtuoh")
 }
 autoplay = "Idle"
+
+[node name="DamageEmitter" parent="." instance=ExtResource("4_mtuoh")]
+collision_mask = 96
+
+[node name="CollisionShape2D" parent="DamageEmitter" index="0"]
+position = Vector2(10, -12)
+shape = SubResource("RectangleShape2D_mtuoh")
+
+[connection signal="area_entered" from="DamageEmitter" to="." method="_on_damage_emitter_area_entered"]
+
+[editable path="DamageEmitter"]
