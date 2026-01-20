@@ -31,9 +31,8 @@ func _physics_process(delta: float) -> void:
 	handle_animation()
 	handle_sprite_direction()
 	handle_air_time(delta)
-	$CharacterSprite.position.y = -height
+	$CharacterSprite.position = Vector2.UP * height
 	move_and_slide()
-	print(current_state)
 
 func handle_movement():
 	if can_move():
@@ -96,7 +95,10 @@ func on_takeoff_complete() -> void:
 	height_speed = Jump_Velocity
 
 func on_jumpkick_complete() -> void:
-	current_state = States.Land
+	if height > 0:
+		current_state = States.Jump
+	else:
+		current_state = States.Land
 
 func on_land_complete() -> void:
 	current_state = States.Idle
