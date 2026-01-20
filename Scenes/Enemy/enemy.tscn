@@ -1,10 +1,9 @@
 [gd_scene load_steps=3 format=3 uid="uid://t8yoilo4plm7"]
 
-[ext_resource type="Script" uid="uid://gip0xs0lm6vu" path="res://Scripts/Enemy/enemy.gd" id="1_mw074"]
 [ext_resource type="PackedScene" uid="uid://bmpmh40w1aq28" path="res://Scenes/Areas/damage_emitter.tscn" id="2_nvvbs"]
+[ext_resource type="PackedScene" uid="uid://cb1067c0dc34m" path="res://Scenes/Areas/damage_receiver.tscn" id="3_2t2r4"]
 
 [node name="Enemy" type="CharacterBody2D" groups=["Eenmy"]]
-script = ExtResource("1_mw074")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(-1, -2)
@@ -16,3 +15,5 @@ position = Vector2(-1, -2)
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 
 [node name="DamageEmitter" parent="." instance=ExtResource("2_nvvbs")]
+
+[node name="DamageReceiver" parent="." instance=ExtResource("3_2t2r4")]

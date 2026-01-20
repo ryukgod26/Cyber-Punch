@@ -1,9 +1,10 @@
-[gd_scene load_steps=16 format=3 uid="uid://dfilj6qruovho"]
+[gd_scene load_steps=18 format=3 uid="uid://dfilj6qruovho"]
 
 [ext_resource type="Script" uid="uid://lnagmto004dw" path="res://Scripts/Player/player.gd" id="1_uvnfx"]
 [ext_resource type="Texture2D" uid="uid://b8ars6iui7otx" path="res://assets/GameDevTavern - BeatEmUp Assets/assets/art/characters/player.png" id="2_a3d8c"]
 [ext_resource type="Texture2D" uid="uid://dbrp4yhgse1xp" path="res://assets/GameDevTavern - BeatEmUp Assets/assets/art/characters/shadow.png" id="3_xpcdj"]
 [ext_resource type="PackedScene" uid="uid://bmpmh40w1aq28" path="res://Scenes/Areas/damage_emitter.tscn" id="4_mtuoh"]
+[ext_resource type="PackedScene" uid="uid://cb1067c0dc34m" path="res://Scenes/Areas/damage_receiver.tscn" id="5_htcer"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_xpcdj"]
 radius = 2.0
@@ -145,41 +146,10 @@ tracks/1/keys = {
 }]
 }
 
-[sub_resource type="Animation" id="Animation_gk6dx"]
-resource_name = "land"
-length = 0.05
-step = 0.01
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("CharacterSprite:frame")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [60]
-}
-tracks/1/type = "method"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath(".")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0.05),
-"transitions": PackedFloat32Array(1),
-"values": [{
-"args": [],
-"method": &"on_land_complete"
-}]
-}
-
 [sub_resource type="Animation" id="Animation_dd0ac"]
 resource_name = "punch"
 length = 0.15
-step = 0.1
+step = 0.01
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -199,11 +169,11 @@ tracks/1/path = NodePath(".")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
-"times": PackedFloat32Array(0.14536849),
+"times": PackedFloat32Array(0.15),
 "transitions": PackedFloat32Array(1),
 "values": [{
 "args": [],
-"method": &"attack_complete"
+"method": &"on_action_complete"
 }]
 }
 tracks/2/type = "value"
@@ -237,26 +207,61 @@ tracks/0/keys = {
 "values": [10, 11, 12, 13, 14, 15, 16, 17]
 }
 
+[sub_resource type="Animation" id="Animation_gk6dx"]
+resource_name = "land"
+length = 0.05
+step = 0.01
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("CharacterSprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [60]
+}
+tracks/1/type = "method"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0.05),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"on_land_complete"
+}]
+}
+
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_mtuoh"]
 _data = {
 &"Idle": SubResource("Animation_xpcdj"),
 &"Jump": SubResource("Animation_jlvik"),
 &"JumpKick": SubResource("Animation_jhyir"),
+&"Land": SubResource("Animation_gk6dx"),
+&"Punch": SubResource("Animation_dd0ac"),
 &"RESET": SubResource("Animation_mtuoh"),
 &"Takeoff": SubResource("Animation_0u5uq"),
-&"land": SubResource("Animation_gk6dx"),
-&"punch": SubResource("Animation_dd0ac"),
-&"walk": SubResource("Animation_htcer")
+&"Walk": SubResource("Animation_htcer")
 }
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_mtuoh"]
 size = Vector2(10, 6)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_htcer"]
+size = Vector2(8, 8)
 
 [node name="Player" type="CharacterBody2D" groups=["Player"]]
 y_sort_enabled = true
 collision_layer = 2
 collision_mask = 25
 script = ExtResource("1_uvnfx")
+Health = 30
 Damage = 1
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
@@ -286,6 +291,12 @@ collision_mask = 96
 position = Vector2(10, -12)
 shape = SubResource("RectangleShape2D_mtuoh")
 
-[connection signal="area_entered" from="DamageEmitter" to="." method="_on_damage_emitter_area_entered"]
+[node name="DamageReceiver" parent="." instance=ExtResource("5_htcer")]
+collision_mask = 32
+
+[node name="CollisionShape2D" parent="DamageReceiver" index="0"]
+position = Vector2(1, -20)
+shape = SubResource("RectangleShape2D_htcer")
 
 [editable path="DamageEmitter"]
+[editable path="DamageReceiver"]
