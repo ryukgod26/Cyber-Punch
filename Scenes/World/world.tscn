@@ -3,7 +3,7 @@
 [ext_resource type="Script" uid="uid://c4asf14umldv5" path="res://Scripts/World/world.gd" id="1_3rhlx"]
 [ext_resource type="PackedScene" uid="uid://br0vvktngdufl" path="res://Scenes/World/stage.tscn" id="1_t1gg8"]
 [ext_resource type="PackedScene" uid="uid://dfilj6qruovho" path="res://Scenes/Player/player.tscn" id="2_yp2ti"]
-[ext_resource type="PackedScene" uid="uid://bnkf74t42qvte" path="res://Scenes/Enemy/base_enemy.tscn" id="4_l1hd3"]
+[ext_resource type="PackedScene" uid="uid://bnkf74t42qvte" path="res://Scenes/Enemy/BaseEnemy/base_enemy.tscn" id="4_l1hd3"]
 [ext_resource type="PackedScene" uid="uid://s0lptux8agds" path="res://Scenes/Objects/barrel.tscn" id="4_vadfg"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_3rhlx"]
@@ -50,6 +50,18 @@ y_sort_enabled = true
 
 [node name="BaseEnemy" parent="ActorsContainer/Entities/Enemies" instance=ExtResource("4_l1hd3")]
 position = Vector2(56, 40)
+
+[node name="BaseEnemy2" parent="ActorsContainer/Entities/Enemies" instance=ExtResource("4_l1hd3")]
+position = Vector2(6, 50)
+
+[node name="BaseEnemy3" parent="ActorsContainer/Entities/Enemies" instance=ExtResource("4_l1hd3")]
+position = Vector2(27, 65)
+
+[node name="BaseEnemy4" parent="ActorsContainer/Entities/Enemies" instance=ExtResource("4_l1hd3")]
+position = Vector2(48, 65)
+
+[node name="BaseEnemy5" parent="ActorsContainer/Entities/Enemies" instance=ExtResource("4_l1hd3")]
+position = Vector2(80, 58)
 
 [node name="Objects" type="Node2D" parent="ActorsContainer"]
 y_sort_enabled = true
