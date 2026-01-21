@@ -17,3 +17,8 @@ position = Vector2(-1, -2)
 [node name="DamageEmitter" parent="." instance=ExtResource("2_nvvbs")]
 
 [node name="DamageReceiver" parent="." instance=ExtResource("3_2t2r4")]
+
+[node name="Timers" type="Node" parent="."]
+
+[node name="FallTimer" type="Timer" parent="Timers"]
+one_shot = true

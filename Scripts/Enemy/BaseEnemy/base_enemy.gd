@@ -19,3 +19,12 @@ func handle_input() -> void:
 				velocity = Vector2.ZERO
 			else:
 				velocity = direction * Speed
+
+func hit(damage: int, direction: Vector2, hit_type:DamageReceiver.HitType) ->void:
+	super.hit(damage,direction,hit_type)
+	if current_health == 0:
+		player.free_slot(self)
+
+
+func _on_fall_timer_timeout() -> void:
+	current_state = States.Land

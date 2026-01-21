@@ -15,7 +15,7 @@ func _process(delta: float) -> void:
 	$Sprite2D.position.y =  -height
 	handle_air_time(delta)
 
-func hit(_damage: int, direction: Vector2) -> void:
+func hit(_damage: int, direction: Vector2, _hit_type:DamageReceiver.HitType) -> void:
 	if current_state == States.Idle:
 		current_state = States.Destroyed
 		$Sprite2D.frame = 1

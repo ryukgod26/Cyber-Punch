@@ -41,3 +41,7 @@ func free_slot(enemy: BaseEnemy):
 	)
 	if occupied_slot.size() == 1:
 		occupied_slot[0].free_the_slot()
+
+
+func _on_fall_timer_timeout() -> void:
+	current_state = States.Land

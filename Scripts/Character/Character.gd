@@ -6,12 +6,15 @@ extends CharacterBody2D
 @export var Speed := 30
 @export var Jump_Velocity := 150
 @export var knockback_force: int
-
+@export var knockdown_force: int
+@export var Fall_Timer:Timer
 @onready var character_sprite: Sprite2D = $CharacterSprite
 
 const GRAVITY := 600
 
-enum States {Idle, Walk, Attack, TakeOff, Jump, Land, JumpKick, Hurt}
+@onready var collision_shape: CollisionShape2D = $CollisionShape2D
+
+enum States {Idle, Walk, Attack, TakeOff, Jump, Land, JumpKick, Hurt, Fall, Grounded}
 
 var current_health := 0
 var current_state := States.Idle
@@ -25,12 +28,15 @@ var anim_map :={
 	States.Jump: "Jump",
 	States.Land: "Land",
 	States.JumpKick: "JumpKick",
-	States.Hurt: "Hurt"
+	States.Hurt: "Hurt",
+	States.Fall: "Fall",
+	States.Grounded: "Grounded"
 }
 
 func _ready() -> void:
 	$DamageEmitter.area_entered.connect(_on_damage_emitter_area_entered)
 	current_health = Health
+	Fall_Timer.timeout.connect(fall_timer_timeout)
 
 func _physics_process(delta: float) -> void:
 	handle_input()
@@ -39,6 +45,7 @@ func _physics_process(delta: float) -> void:
 	handle_sprite_direction()
 	handle_air_time(delta)
 	$CharacterSprite.position = Vector2.UP * height
+	collision_shape.disabled = current_state == States.Grounded
 	move_and_slide()
 
 func handle_movement():
@@ -84,8 +91,11 @@ func on_action_complete() -> void:
 
 func _on_damage_emitter_area_entered(area: Area2D) -> void:
 	if area is DamageReceiver:
+		var hit_type := DamageReceiver.HitType.NORMAL
+		if current_state == States.JumpKick:
+			hit_type = DamageReceiver.HitType.KNOCKDOWN
 		var direction := Vector2.LEFT if area.global_position.x < global_position.x else Vector2.RIGHT
-		area.hit(Damage,direction)
+		area.hit(Damage,direction,hit_type)
 
 func on_takeoff_complete() -> void:
 	current_state = States.Jump
@@ -101,18 +111,29 @@ func on_land_complete() -> void:
 	current_state = States.Idle
 
 func handle_air_time(delta: float) -> void:
-	if current_state == States.Jump or current_state == States.JumpKick:
+	if [States.Jump,States.JumpKick,States.Fall].has(current_state):
 		height += height_speed * delta
 		if height <0:
 			height = 0
-			current_state = States.Land
+			if current_state == States.Fall:
+				current_state = States.Grounded
+				$Timers/FallTimer.start()
+				print("Timer Started")
+			else:
+				current_state = States.Land
+			velocity = Vector2.ZERO
 		else:
 			height_speed -= GRAVITY * delta
 
-func hit(damage, direction) -> void:
+func hit(damage, direction,hit_type:DamageReceiver.HitType) -> void:
 	current_health -= damage
-	if current_health <= 0:
-		queue_free()
+	if hit_type == DamageReceiver.HitType.KNOCKDOWN:
+		current_state = States.Fall
+		height_speed = knockdown_force
 	else:
 		current_state = States.Hurt
-		velocity = knockback_force * direction
+	velocity = knockback_force * direction
+
+func fall_timer_timeout() -> void:
+	print("timeout")
+	current_state = States.Land
