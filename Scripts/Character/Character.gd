@@ -48,9 +48,7 @@ func _physics_process(delta: float) -> void:
 	handle_air_time(delta)
 	$CharacterSprite.position = Vector2.UP * height
 	collision_shape.disabled = current_state == States.Grounded
-	if current_health <=0:
-		current_state = States.Death
-		handle_death()
+	
 	move_and_slide()
 
 func handle_movement():
@@ -90,6 +88,9 @@ func can_jump() -> bool:
 
 func can_jump_kixk() -> bool:
 	return current_state == States.Jump
+
+func can_get_hurt() -> bool:
+	return [States.Idle,States.Walk,States.Attack,States.TakeOff,States.Jump,States.Land,].has(current_state)
 
 func on_action_complete() -> void:
 	current_state = States.Idle
@@ -131,13 +132,17 @@ func handle_air_time(delta: float) -> void:
 			height_speed -= GRAVITY * delta
 
 func hit(damage, direction,hit_type:DamageReceiver.HitType) -> void:
-	current_health -= damage
-	if hit_type == DamageReceiver.HitType.KNOCKDOWN:
-		current_state = States.Fall
-		height_speed = knockdown_force
-	else:
-		current_state = States.Hurt
-	velocity = knockback_force * direction
+	if can_get_hurt():
+		current_health -= damage
+		if hit_type == DamageReceiver.HitType.KNOCKDOWN:
+			current_state = States.Fall
+			height_speed = knockdown_force
+		else:
+			current_state = States.Hurt
+		velocity = knockback_force * direction
+		if current_health <=0:
+			current_state = States.Death
+			handle_death()
 
 func fall_timer_timeout() -> void:
 	print("timeout")
@@ -145,6 +150,7 @@ func fall_timer_timeout() -> void:
 
 func handle_death() -> void:
 	if current_state == States.Death and not Can_Respawn:
+		velocity = Vector2.ZERO
 		print("Death Called")
 		var tween = create_tween()
 		tween.tween_property(self,"modulate:a",0,2)
