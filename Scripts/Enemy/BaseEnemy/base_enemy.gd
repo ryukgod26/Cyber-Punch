@@ -27,4 +27,9 @@ func hit(damage: int, direction: Vector2, hit_type:DamageReceiver.HitType) ->voi
 
 
 func _on_fall_timer_timeout() -> void:
-	current_state = States.Land
+	if current_state == States.Grounded:
+		if current_health <= 0:
+			current_state = States.Death
+			handle_death()
+		else:
+			current_state = States.Land

@@ -1,6 +1,7 @@
 class_name Character
 extends CharacterBody2D
 
+@export var Can_Respawn:bool
 @export var Health: int
 @export var Damage := 0
 @export var Speed := 30
@@ -14,7 +15,7 @@ const GRAVITY := 600
 
 @onready var collision_shape: CollisionShape2D = $CollisionShape2D
 
-enum States {Idle, Walk, Attack, TakeOff, Jump, Land, JumpKick, Hurt, Fall, Grounded}
+enum States {Idle, Walk, Attack, TakeOff, Jump, Land, JumpKick, Hurt, Fall, Grounded,Death}
 
 var current_health := 0
 var current_state := States.Idle
@@ -30,7 +31,8 @@ var anim_map :={
 	States.JumpKick: "JumpKick",
 	States.Hurt: "Hurt",
 	States.Fall: "Fall",
-	States.Grounded: "Grounded"
+	States.Grounded: "Grounded",
+	States.Death: "Grounded",
 }
 
 func _ready() -> void:
@@ -46,6 +48,9 @@ func _physics_process(delta: float) -> void:
 	handle_air_time(delta)
 	$CharacterSprite.position = Vector2.UP * height
 	collision_shape.disabled = current_state == States.Grounded
+	if current_health <=0:
+		current_state = States.Death
+		handle_death()
 	move_and_slide()
 
 func handle_movement():
@@ -137,3 +142,13 @@ func hit(damage, direction,hit_type:DamageReceiver.HitType) -> void:
 func fall_timer_timeout() -> void:
 	print("timeout")
 	current_state = States.Land
+
+func handle_death() -> void:
+	if current_state == States.Death and not Can_Respawn:
+		print("Death Called")
+		var tween = create_tween()
+		tween.tween_property(self,"modulate:a",0,2)
+		tween.tween_callback(queue_free)
+	else:
+		print("Function Called")
+		current_state = States.Land

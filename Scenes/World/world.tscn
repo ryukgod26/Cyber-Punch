@@ -43,7 +43,7 @@ y_sort_enabled = true
 y_sort_enabled = true
 
 [node name="Player" parent="ActorsContainer/Entities/Player" instance=ExtResource("2_yp2ti")]
-position = Vector2(31, 38)
+position = Vector2(34, 50)
 
 [node name="Enemies" type="Node2D" parent="ActorsContainer/Entities"]
 y_sort_enabled = true
