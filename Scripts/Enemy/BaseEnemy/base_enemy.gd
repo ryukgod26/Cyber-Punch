@@ -25,7 +25,6 @@ func hit(damage: int, direction: Vector2, hit_type:DamageReceiver.HitType) ->voi
 	if current_health == 0:
 		player.free_slot(self)
 
-
 func _on_fall_timer_timeout() -> void:
 	if current_state == States.Grounded:
 		if current_health <= 0:
@@ -33,3 +32,9 @@ func _on_fall_timer_timeout() -> void:
 			handle_death()
 		else:
 			current_state = States.Land
+
+func set_heading() -> void:
+	if global_position.direction_to(player.global_position).x > 0:
+		heading = Vector2.RIGHT
+	elif global_position.direction_to(player.global_position).x < 0:
+		heading = Vector2.LEFT

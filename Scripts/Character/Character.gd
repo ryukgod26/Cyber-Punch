@@ -41,6 +41,7 @@ var anim_map :={
 }
 var attack_combo_idx := 0
 var is_last_attack_successfull := false
+var heading := Vector2.RIGHT
 
 func _ready() -> void:
 	$DamageEmitter.area_entered.connect(_on_damage_emitter_area_entered)
@@ -55,6 +56,7 @@ func _physics_process(delta: float) -> void:
 	handle_animation()
 	handle_sprite_direction()
 	handle_air_time(delta)
+	set_heading()
 	$CharacterSprite.position = Vector2.UP * height
 	collision_shape.disabled = is_collision_disabled()
 	move_and_slide()
@@ -78,10 +80,10 @@ func handle_animation() -> void:
 		print_debug("Trying to Play %s Animation Which Does not Exist" % anim_map[current_state])
 
 func handle_sprite_direction() -> void:
-	if velocity.x > 0:
+	if heading == Vector2.RIGHT:
 		character_sprite.flip_h = false
 		$DamageEmitter/CollisionShape2D.position.x = 10
-	elif velocity.x < 0:
+	else:
 		character_sprite.flip_h = true
 		$DamageEmitter/CollisionShape2D.position.x = -10
 
@@ -191,3 +193,6 @@ func on_wall_hit(wall: AnimatableBody2D) -> void:
 	current_state = States.Fall
 	height_speed = knockdown_force
 	velocity = -velocity/2.
+
+func set_heading() -> void:
+	pass
