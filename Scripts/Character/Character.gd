@@ -21,6 +21,7 @@ var current_health := 0
 var current_state := States.Idle
 var height := 0.
 var height_speed := 0.
+var anim_attacks = ['Punch','PunchAlt','Kick', 'RoundKick']
 var anim_map :={
 	States.Idle : "Idle",
 	States.Walk: "Walk",
@@ -34,6 +35,7 @@ var anim_map :={
 	States.Grounded: "Grounded",
 	States.Death: "Grounded",
 }
+var attack_combo_idx := 0
 
 func _ready() -> void:
 	$DamageEmitter.area_entered.connect(_on_damage_emitter_area_entered)
@@ -62,7 +64,9 @@ func handle_input() -> void:
 	pass
 
 func handle_animation() -> void:
-	if $AnimationPlayer.has_animation(anim_map[current_state]):
+	if current_state == States.Attack:
+		$AnimationPlayer.play(anim_attacks[attack_combo_idx])
+	elif $AnimationPlayer.has_animation(anim_map[current_state]):
 		$AnimationPlayer.play(anim_map[current_state])
 	else :
 		print_debug("Trying to Play %s Animation Which Does not Exist" % anim_map[current_state])
