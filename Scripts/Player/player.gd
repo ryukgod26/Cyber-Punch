@@ -10,7 +10,11 @@ func handle_input() -> void:
 	
 	if can_attack() and Input.is_action_just_pressed("attack"):
 		current_state = States.Attack
-		attack_combo_idx = (attack_combo_idx+1) % anim_attacks.size()
+		if is_last_attack_successfull:
+			attack_combo_idx = (attack_combo_idx+1) % anim_attacks.size()
+			is_last_attack_successfull = false
+		else:
+			attack_combo_idx = 0
 	
 	if can_jump() and Input.is_action_just_pressed("jump"):
 		current_state = States.TakeOff

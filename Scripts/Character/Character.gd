@@ -36,6 +36,7 @@ var anim_map :={
 	States.Death: "Grounded",
 }
 var attack_combo_idx := 0
+var is_last_attack_successfull := false
 
 func _ready() -> void:
 	$DamageEmitter.area_entered.connect(_on_damage_emitter_area_entered)
@@ -106,6 +107,7 @@ func _on_damage_emitter_area_entered(area: Area2D) -> void:
 			hit_type = DamageReceiver.HitType.KNOCKDOWN
 		var direction := Vector2.LEFT if area.global_position.x < global_position.x else Vector2.RIGHT
 		area.hit(Damage,direction,hit_type)
+		is_last_attack_successfull = true
 
 func on_takeoff_complete() -> void:
 	current_state = States.Jump
