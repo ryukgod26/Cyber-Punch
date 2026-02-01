@@ -5,9 +5,8 @@ var player:Player
 var player_slot:EnemySlot
 
 func _ready() -> void:
+	super._ready()
 	player = get_tree().get_first_node_in_group("Player")
-	$DamageEmitter.area_entered.connect(_on_damage_emitter_area_entered)
-	current_health = Health
 
 func handle_input() -> void:
 	if player != null and can_move():
@@ -22,6 +21,7 @@ func handle_input() -> void:
 
 func hit(damage: int, direction: Vector2, hit_type:DamageReceiver.HitType) ->void:
 	super.hit(damage,direction,hit_type)
+	print(current_state)
 	if current_health == 0:
 		player.free_slot(self)
 

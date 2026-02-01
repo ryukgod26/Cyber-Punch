@@ -4,18 +4,21 @@ extends CharacterBody2D
 @export var Can_Respawn:bool
 @export var Health: int
 @export var Damage := 0
+@export var DAMAGE_POWER: int
 @export var Speed := 30
 @export var Jump_Velocity := 150
+@export var Flight_Velocity: int
 @export var knockback_force: int
 @export var knockdown_force: int
 @export var Fall_Timer:Timer
 @onready var character_sprite: Sprite2D = $CharacterSprite
+@onready var colleteral_damage_emitter: Area2D = $ColleteralDamageEmitter
 
 const GRAVITY := 600
 
 @onready var collision_shape: CollisionShape2D = $CollisionShape2D
 
-enum States {Idle, Walk, Attack, TakeOff, Jump, Land, JumpKick, Hurt, Fall, Grounded,Death}
+enum States {Idle, Walk, Attack, TakeOff, Jump, Land, JumpKick, Hurt, Fall, Grounded, Death, Fly}
 
 var current_health := 0
 var current_state := States.Idle
@@ -34,6 +37,7 @@ var anim_map :={
 	States.Fall: "Fall",
 	States.Grounded: "Grounded",
 	States.Death: "Grounded",
+	States.Fly: "Fly",
 }
 var attack_combo_idx := 0
 var is_last_attack_successfull := false
@@ -42,6 +46,8 @@ func _ready() -> void:
 	$DamageEmitter.area_entered.connect(_on_damage_emitter_area_entered)
 	current_health = Health
 	Fall_Timer.timeout.connect(fall_timer_timeout)
+	colleteral_damage_emitter.area_entered.connect(on_collateral_damage)
+	colleteral_damage_emitter.body_entered.connect(on_wall_hit)
 
 func _physics_process(delta: float) -> void:
 	handle_input()
@@ -50,8 +56,7 @@ func _physics_process(delta: float) -> void:
 	handle_sprite_direction()
 	handle_air_time(delta)
 	$CharacterSprite.position = Vector2.UP * height
-	collision_shape.disabled = current_state == States.Grounded
-	
+	collision_shape.disabled = is_collision_disabled()
 	move_and_slide()
 
 func handle_movement():
@@ -91,7 +96,7 @@ func can_move() -> bool:
 func can_jump() -> bool:
 	return current_state == States.Idle or current_state == States.Walk
 
-func can_jump_kixk() -> bool:
+func can_jump_kick() -> bool:
 	return current_state == States.Jump
 
 func can_get_hurt() -> bool:
@@ -103,10 +108,16 @@ func on_action_complete() -> void:
 func _on_damage_emitter_area_entered(area: Area2D) -> void:
 	if area is DamageReceiver:
 		var hit_type := DamageReceiver.HitType.NORMAL
+		var cur_damage = Damage
 		if current_state == States.JumpKick:
 			hit_type = DamageReceiver.HitType.KNOCKDOWN
+		if attack_combo_idx == anim_attacks.size() - 1:
+			hit_type = DamageReceiver.HitType.POWER
+			cur_damage = DAMAGE_POWER
+			print("Power Punch")
+		
 		var direction := Vector2.LEFT if area.global_position.x < global_position.x else Vector2.RIGHT
-		area.hit(Damage,direction,hit_type)
+		area.hit(cur_damage,direction,hit_type)
 		is_last_attack_successfull = true
 
 func on_takeoff_complete() -> void:
@@ -143,9 +154,13 @@ func hit(damage, direction,hit_type:DamageReceiver.HitType) -> void:
 		if hit_type == DamageReceiver.HitType.KNOCKDOWN:
 			current_state = States.Fall
 			height_speed = knockdown_force
+			velocity = knockback_force * direction
+		elif hit_type == DamageReceiver.HitType.POWER:
+			current_state = States.Fly
+			velocity = Flight_Velocity * direction
 		else:
 			current_state = States.Hurt
-		velocity = knockback_force * direction
+			velocity = knockback_force * direction
 		if current_health <=0:
 			current_state = States.Death
 			handle_death()
@@ -164,3 +179,15 @@ func handle_death() -> void:
 	else:
 		print("Function Called")
 		current_state = States.Land
+
+func is_collision_disabled() -> bool:
+	return current_state == States.Grounded or current_state == States.Death or current_state == States.Fly
+
+func on_collateral_damage(receiver: DamageReceiver) -> void:
+	var dir := Vector2.LEFT if receiver.global_position.x < global_position.x else Vector2.RIGHT
+	receiver.hit(0,dir,DamageReceiver.HitType.KNOCKDOWN)
+
+func on_wall_hit(wall: AnimatableBody2D) -> void:
+	current_state = States.Fall
+	height_speed = knockdown_force
+	velocity = -velocity/2.

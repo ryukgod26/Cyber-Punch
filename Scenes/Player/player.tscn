@@ -1,4 +1,4 @@
-[gd_scene load_steps=22 format=3 uid="uid://dfilj6qruovho"]
+[gd_scene load_steps=23 format=3 uid="uid://dfilj6qruovho"]
 
 [ext_resource type="Script" uid="uid://lnagmto004dw" path="res://Scripts/Player/player.gd" id="1_uvnfx"]
 [ext_resource type="Texture2D" uid="uid://b8ars6iui7otx" path="res://assets/GameDevTavern - BeatEmUp Assets/assets/art/characters/player.png" id="2_a3d8c"]
@@ -389,6 +389,9 @@ size = Vector2(10, 6)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_htcer"]
 size = Vector2(8, 8)
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_dd0ac"]
+size = Vector2(6, 6)
+
 [node name="Player" type="CharacterBody2D" node_paths=PackedStringArray("Fall_Timer") groups=["Player"]]
 y_sort_enabled = true
 collision_layer = 2
@@ -397,6 +400,7 @@ script = ExtResource("1_uvnfx")
 Can_Respawn = true
 Health = 30
 Damage = 2
+DAMAGE_POWER = 4
 Fall_Timer = NodePath("Timers/FallTimer")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
@@ -451,6 +455,13 @@ position = Vector2(-16, 4)
 
 [node name="FallTimer" type="Timer" parent="Timers"]
 one_shot = true
+
+[node name="ColleteralDamageEmitter" parent="." instance=ExtResource("4_mtuoh")]
+collision_layer = 256
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="ColleteralDamageEmitter"]
+position = Vector2(0, -11)
+shape = SubResource("RectangleShape2D_dd0ac")
 
 [connection signal="timeout" from="Timers/FallTimer" to="." method="_on_fall_timer_timeout"]
 
