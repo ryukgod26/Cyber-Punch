@@ -18,13 +18,13 @@ const GRAVITY := 600
 
 @onready var collision_shape: CollisionShape2D = $CollisionShape2D
 
-enum States {Idle, Walk, Attack, TakeOff, Jump, Land, JumpKick, Hurt, Fall, Grounded, Death, Fly}
+enum States {Idle, Walk, Attack, TakeOff, Jump, Land, JumpKick, Hurt, Fall, Grounded, Death, Fly, PREP_ATTACK}
 
 var current_health := 0
 var current_state := States.Idle
 var height := 0.
 var height_speed := 0.
-var anim_attacks = ['Punch','PunchAlt','Kick', 'RoundKick']
+var anim_attacks = []
 var anim_map :={
 	States.Idle : "Idle",
 	States.Walk: "Walk",
@@ -56,6 +56,7 @@ func _physics_process(delta: float) -> void:
 	handle_animation()
 	handle_sprite_direction()
 	handle_air_time(delta)
+	handle_prep_attack()
 	set_heading()
 	$CharacterSprite.position = Vector2.UP * height
 	collision_shape.disabled = is_collision_disabled()
@@ -86,6 +87,9 @@ func handle_sprite_direction() -> void:
 	else:
 		character_sprite.flip_h = true
 		$DamageEmitter/CollisionShape2D.position.x = -10
+
+func handle_prep_attack() -> void:
+	pass
 
 func can_attack() -> bool:
 	#Might Change the Logic in future due to extra states

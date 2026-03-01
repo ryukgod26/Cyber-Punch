@@ -5,7 +5,7 @@ var occupanct: BaseEnemy = null
 
 func is_free() -> bool:
 	return occupanct == null
-	
+
 func free_the_slot() -> void:
 	occupanct = null
 

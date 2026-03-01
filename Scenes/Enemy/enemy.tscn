@@ -23,4 +23,8 @@ position = Vector2(-1, -2)
 [node name="FallTimer" type="Timer" parent="Timers"]
 one_shot = true
 
+[node name="AttackTimer" type="Timer" parent="Timers"]
+
+[node name="AttackPrepTimer" type="Timer" parent="Timers"]
+
 [node name="ColleteralDamageEmitter" parent="." instance=ExtResource("2_nvvbs")]

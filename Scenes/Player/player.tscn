@@ -1,4 +1,4 @@
-[gd_scene load_steps=23 format=3 uid="uid://dfilj6qruovho"]
+[gd_scene load_steps=26 format=3 uid="uid://dfilj6qruovho"]
 
 [ext_resource type="Script" uid="uid://lnagmto004dw" path="res://Scripts/Player/player.gd" id="1_uvnfx"]
 [ext_resource type="Texture2D" uid="uid://b8ars6iui7otx" path="res://assets/GameDevTavern - BeatEmUp Assets/assets/art/characters/player.png" id="2_a3d8c"]
@@ -10,6 +10,72 @@
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_xpcdj"]
 radius = 2.0
 height = 12.0
+
+[sub_resource type="Animation" id="Animation_dey5f"]
+resource_name = "Fall"
+length = 0.1
+loop_mode = 1
+step = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("CharacterSprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [80]
+}
+
+[sub_resource type="Animation" id="Animation_r5xpd"]
+resource_name = "Grounded"
+length = 0.1
+step = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("CharacterSprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [82]
+}
+
+[sub_resource type="Animation" id="Animation_7g0yx"]
+resource_name = "Hurt"
+length = 0.3
+step = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("CharacterSprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 1,
+"values": [70, 71, 72]
+}
+tracks/1/type = "method"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0.3),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"on_action_complete"
+}]
+}
 
 [sub_resource type="Animation" id="Animation_xpcdj"]
 resource_name = "Idle"
@@ -370,6 +436,9 @@ tracks/0/keys = {
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_mtuoh"]
 _data = {
+&"Fall": SubResource("Animation_dey5f"),
+&"Grounded": SubResource("Animation_r5xpd"),
+&"Hurt": SubResource("Animation_7g0yx"),
 &"Idle": SubResource("Animation_xpcdj"),
 &"Jump": SubResource("Animation_jlvik"),
 &"JumpKick": SubResource("Animation_jhyir"),

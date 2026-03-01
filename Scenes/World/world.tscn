@@ -58,16 +58,13 @@ y_sort_enabled = true
 position = Vector2(56, 40)
 
 [node name="BaseEnemy2" parent="ActorsContainer/Entities/Enemies" instance=ExtResource("4_l1hd3")]
-position = Vector2(6, 50)
+position = Vector2(56, 61)
 
 [node name="BaseEnemy3" parent="ActorsContainer/Entities/Enemies" instance=ExtResource("4_l1hd3")]
-position = Vector2(27, 65)
+position = Vector2(16, 60)
 
 [node name="BaseEnemy4" parent="ActorsContainer/Entities/Enemies" instance=ExtResource("4_l1hd3")]
-position = Vector2(48, 65)
-
-[node name="BaseEnemy5" parent="ActorsContainer/Entities/Enemies" instance=ExtResource("4_l1hd3")]
-position = Vector2(80, 58)
+position = Vector2(14, 34)
 
 [node name="Objects" type="Node2D" parent="ActorsContainer"]
 y_sort_enabled = true
