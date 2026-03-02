@@ -38,6 +38,7 @@ var anim_map :={
 	States.Grounded: "Grounded",
 	States.Death: "Grounded",
 	States.Fly: "Fly",
+	States.PREP_ATTACK: "Idle",
 }
 var attack_combo_idx := 0
 var is_last_attack_successfull := false

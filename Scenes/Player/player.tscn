@@ -456,7 +456,7 @@ _data = {
 size = Vector2(10, 6)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_htcer"]
-size = Vector2(8, 8)
+size = Vector2(10, 10)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_dd0ac"]
 size = Vector2(6, 6)
@@ -503,7 +503,7 @@ shape = SubResource("RectangleShape2D_mtuoh")
 collision_mask = 32
 
 [node name="CollisionShape2D" parent="DamageReceiver" index="0"]
-position = Vector2(1, -20)
+position = Vector2(1, -18)
 shape = SubResource("RectangleShape2D_htcer")
 
 [node name="EnemySlots" type="Node2D" parent="."]

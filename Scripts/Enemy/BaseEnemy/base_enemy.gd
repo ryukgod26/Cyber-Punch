@@ -7,13 +7,16 @@ extends Character
 @onready var attack_prep_timer: Timer = $Timers/AttackPrepTimer
 @onready var attack_timer: Timer = $Timers/AttackTimer
 
+var time_since_last_hit := Time.get_ticks_msec()
+var time_since_prep_hit := Time.get_ticks_msec()
+
 var player:Player
 var player_slot:EnemySlot
 
 func _ready() -> void:
 	super._ready()
 	player = get_tree().get_first_node_in_group("Player")
-	anim_attacks = []
+	anim_attacks = ['Punch',"PunchAlt"]
 
 func handle_input() -> void:
 	if player != null and can_move():
@@ -25,7 +28,7 @@ func handle_input() -> void:
 				velocity = Vector2.ZERO
 				if can_attack():
 					current_state = States.PREP_ATTACK
-					attack_prep_timer.start()
+					time_since_prep_hit = Time.get_ticks_msec()
 			else:
 				velocity = direction * Speed
 
@@ -53,10 +56,11 @@ func is_player_within_range() -> bool:
 	return (player_slot.global_position - global_position).length() < 1
 
 func can_attack() -> bool:
-	if attack_prep_timer.is_stopped():
-		return super.can_attack()
-	return false
+	if Time.get_ticks_msec() - time_since_last_hit < duration_between_hits:
+		return false
+	return super.can_attack()
 
 func handle_prep_attack() -> void:
-	if current_state == States.PREP_ATTACK and attack_prep_timer.is_stopped():
+	if current_state == States.PREP_ATTACK and (Time.get_ticks_msec() -  time_since_prep_hit > duration_prep_hit):
 		current_state = States.Attack
+		time_since_last_hit = Time.get_ticks_msec()
