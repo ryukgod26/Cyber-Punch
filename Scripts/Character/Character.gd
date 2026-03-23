@@ -5,20 +5,21 @@ extends CharacterBody2D
 @export var Health: int
 @export var Damage := 0
 @export var DAMAGE_POWER: int
+@export var has_knife: bool
 @export var Speed := 30
 @export var Jump_Velocity := 150
 @export var Flight_Velocity: int
 @export var knockback_force: int
 @export var knockdown_force: int
 @export var Fall_Timer:Timer
-@onready var character_sprite: Sprite2D = $CharacterSprite
-@onready var colleteral_damage_emitter: Area2D = $ColleteralDamageEmitter
 
 const GRAVITY := 600
-
+@onready var character_sprite: Sprite2D = $CharacterSprite
+@onready var colleteral_damage_emitter: Area2D = $ColleteralDamageEmitter
 @onready var collision_shape: CollisionShape2D = $CollisionShape2D
+@onready var knife_sprite: Sprite2D = $KnifeSprite
 
-enum States {Idle, Walk, Attack, TakeOff, Jump, Land, JumpKick, Hurt, Fall, Grounded, Death, Fly, PREP_ATTACK}
+enum States {Idle, Walk, Attack, TakeOff, Jump, Land, JumpKick, Hurt, Fall, Grounded, Death, Fly, PREP_ATTACK, THROW}
 
 var current_health := 0
 var current_state := States.Idle
@@ -39,6 +40,7 @@ var anim_map :={
 	States.Death: "Grounded",
 	States.Fly: "Fly",
 	States.PREP_ATTACK: "Idle",
+	States.THROW: "Throw"
 }
 var attack_combo_idx := 0
 var is_last_attack_successfull := false
@@ -51,7 +53,7 @@ func _ready() -> void:
 	colleteral_damage_emitter.area_entered.connect(on_collateral_damage)
 	colleteral_damage_emitter.body_entered.connect(on_wall_hit)
 
-func _physics_process(delta: float) -> void:
+func _process(delta: float) -> void:
 	handle_input()
 	handle_movement()
 	handle_animation()
@@ -59,7 +61,9 @@ func _physics_process(delta: float) -> void:
 	handle_air_time(delta)
 	handle_prep_attack()
 	set_heading()
+	knife_sprite.visible = has_knife
 	$CharacterSprite.position = Vector2.UP * height
+	knife_sprite.position = Vector2.UP * height
 	collision_shape.disabled = is_collision_disabled()
 	move_and_slide()
 
@@ -84,8 +88,10 @@ func handle_animation() -> void:
 func handle_sprite_direction() -> void:
 	if heading == Vector2.RIGHT:
 		character_sprite.flip_h = false
+		knife_sprite.flip_h = false
 		$DamageEmitter/CollisionShape2D.position.x = 10
 	else:
+		knife_sprite.flip_h = true
 		character_sprite.flip_h = true
 		$DamageEmitter/CollisionShape2D.position.x = -10
 
@@ -107,10 +113,14 @@ func can_jump_kick() -> bool:
 	return current_state == States.Jump
 
 func can_get_hurt() -> bool:
-	return [States.Idle,States.Walk,States.Attack,States.TakeOff,States.Jump,States.Land,].has(current_state)
+	return [States.Idle,States.Walk,States.Attack,States.TakeOff,States.Land,].has(current_state)
 
 func on_action_complete() -> void:
 	current_state = States.Idle
+
+func on_throw_complete() -> void:
+	current_state = States.Idle
+	has_knife = false
 
 func _on_damage_emitter_area_entered(area: Area2D) -> void:
 	if area is DamageReceiver:

@@ -28,3 +28,5 @@ one_shot = true
 [node name="AttackPrepTimer" type="Timer" parent="Timers"]
 
 [node name="ColleteralDamageEmitter" parent="." instance=ExtResource("2_nvvbs")]
+
+[node name="KnifeSprite" type="Sprite2D" parent="."]
