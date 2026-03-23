@@ -50,12 +50,15 @@ y_sort_enabled = true
 
 [node name="Player" parent="ActorsContainer/Entities/Player" instance=ExtResource("2_yp2ti")]
 position = Vector2(34, 50)
+Health = 50
 
 [node name="Enemies" type="Node2D" parent="ActorsContainer/Entities"]
 y_sort_enabled = true
 
 [node name="BaseEnemy" parent="ActorsContainer/Entities/Enemies" instance=ExtResource("4_l1hd3")]
-position = Vector2(56, 40)
+position = Vector2(58, 62)
+duration_between_hits = 5
+Damage = 20
 
 [node name="Objects" type="Node2D" parent="ActorsContainer"]
 y_sort_enabled = true

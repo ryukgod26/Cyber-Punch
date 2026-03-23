@@ -168,7 +168,7 @@ func hit(damage, direction,hit_type:DamageReceiver.HitType) -> void:
 		else:
 			current_state = States.Hurt
 			velocity = knockback_force * direction
-		if current_health <=0:
+		if current_health <= 0:
 			current_state = States.Death
 			handle_death()
 

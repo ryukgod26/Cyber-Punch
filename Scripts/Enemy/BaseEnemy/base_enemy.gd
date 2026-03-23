@@ -63,4 +63,5 @@ func can_attack() -> bool:
 func handle_prep_attack() -> void:
 	if current_state == States.PREP_ATTACK and (Time.get_ticks_msec() -  time_since_prep_hit > duration_prep_hit):
 		current_state = States.Attack
+		anim_attacks.shuffle()
 		time_since_last_hit = Time.get_ticks_msec()
