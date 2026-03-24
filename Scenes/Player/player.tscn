@@ -573,6 +573,10 @@ tracks/2/keys = {
 "values": [61]
 }
 
+[sub_resource type="Animation" id="Animation_ks1b7"]
+resource_name = "Throw"
+step = 0.1
+
 [sub_resource type="Animation" id="Animation_htcer"]
 resource_name = "walk"
 length = 0.8
@@ -602,10 +606,6 @@ tracks/1/keys = {
 "update": 1,
 "values": [10, 11, 12, 13, 14, 15, 16, 17]
 }
-
-[sub_resource type="Animation" id="Animation_ks1b7"]
-resource_name = "Throw"
-step = 0.1
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_mtuoh"]
 _data = {
