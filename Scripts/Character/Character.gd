@@ -113,7 +113,7 @@ func can_jump_kick() -> bool:
 	return current_state == States.Jump
 
 func can_get_hurt() -> bool:
-	return [States.Idle,States.Walk,States.Attack,States.TakeOff,States.Land,].has(current_state)
+	return [States.Idle,States.Walk,States.TakeOff,States.Land].has(current_state)
 
 func on_action_complete() -> void:
 	current_state = States.Idle
@@ -167,6 +167,8 @@ func handle_air_time(delta: float) -> void:
 
 func hit(damage, direction,hit_type:DamageReceiver.HitType) -> void:
 	if can_get_hurt():
+		if has_knife:
+			has_knife = false
 		current_health -= damage
 		if hit_type == DamageReceiver.HitType.KNOCKDOWN:
 			current_state = States.Fall
@@ -193,6 +195,8 @@ func handle_death() -> void:
 		var tween = create_tween()
 		tween.tween_property(self,"modulate:a",0,2)
 		tween.tween_callback(queue_free)
+		await get_tree().create_timer(1.5).timeout
+		get_tree().reload_current_scene()
 	else:
 		print("Function Called")
 		current_state = States.Land

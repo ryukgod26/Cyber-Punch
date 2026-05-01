@@ -51,6 +51,7 @@ y_sort_enabled = true
 [node name="Player" parent="ActorsContainer/Entities/Player" instance=ExtResource("2_yp2ti")]
 position = Vector2(34, 50)
 Health = 50
+has_knife = true
 
 [node name="Enemies" type="Node2D" parent="ActorsContainer/Entities"]
 y_sort_enabled = true
